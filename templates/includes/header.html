@@ -34,14 +34,13 @@
                 <span class="material-symbols-outlined text-2xl">menu</span>
             </button>
 
-            <!-- لوگوی سایت متصل به تصویر دیتابیس / مدیا -->
+            <!-- لوگوی سایت: جابجایی خودکار بین لوگوی تم روشن و تم تیره -->
             <a href="{% url 'home' %}" class="flex items-center gap-space-sm">
-                <div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container font-bold overflow-hidden shadow-sm">
-                    {% if sec.hero.image %}
-                        <img src="{{ sec.hero.image.url }}" alt="لوگو" class="w-full h-full object-cover">
-                    {% else %}
-                        <img src="https://via.placeholder.com/40" alt="لوگو" class="w-full h-full object-cover">
-                    {% endif %}
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden transition-all">
+                    <!-- لوگوی تم روشن (در حالت لایت نمایش داده می‌شود) -->
+                    <img src="{% static 'img/logo.png' %}" alt="امکااستور" class="w-full h-full object-contain block dark:hidden">
+                    <!-- لوگوی تم تیره (در حالت دارک نمایش داده می‌شود) -->
+                    <img src="{% static 'img/logo-dark.png' %}" alt="امکااستور" class="w-full h-full object-contain hidden dark:block">
                 </div>
                 <div class="flex flex-col">
                     <span class="text-xl text-primary tracking-tight font-extrabold">امکااستور</span>
@@ -112,7 +111,7 @@
         </div>
     </div>
 
-    <!-- منوی ناوبری دسکتاپ (لینک مستقیم به محصولات هر دسته)[cite: 3] -->
+    <!-- منوی ناوبری دسکتاپ[cite: 3] -->
     <div class="bg-surface-container-lowest border-t border-surface-container/40">
         <div class="max-w-[1360px] mx-auto px-margin h-11 flex items-center justify-between">
             <nav class="hidden md:flex items-center gap-space-lg text-sm font-bold">
@@ -127,7 +126,7 @@
     </div>
 </header>
 
-<!-- اسکریپت جاوااسکریپت برای نمایش تاریخ شمسی روز در هدر -->
+<!-- اسکریپت نمایش تاریخ شمسی روز در هدر -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const options = { year: 'numeric', month: 'long', day: 'numeric', calendar: 'persian' };
@@ -138,7 +137,8 @@
                 dateElement.textContent = todayPersian;
             }
         } catch (e) {
-            document.getElementById('current-jalali-date').textContent = "امروز";
+            const el = document.getElementById('current-jalali-date');
+            if(el) el.textContent = "امروز";
         }
     });
 </script>

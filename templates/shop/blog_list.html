@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}مجله و مقالات | امکااستور{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full max-w-[1360px] mx-auto px-margin gap-space-xl pb-16">
+    <div class="flex items-center justify-between border-b pb-4 border-surface-container">
+        <h1 class="text-2xl font-black text-on-surface">مجله و دانستنی‌ها</h1>
+        <a href="{% url 'home' %}" class="bg-primary text-on-primary px-4 py-2 rounded-lg text-xs font-bold">بازگشت به صفحه اصلی</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+        {% for post in posts %}
+        <article class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm border border-surface-container/50 flex flex-col justify-between">
+            {% if post.image %}
+            <img src="{{ post.image.url }}" class="w-full h-48 object-cover" alt="{{ post.title }}">
+            {% endif %}
+            <div class="p-4 flex flex-col gap-2">
+                <div class="flex items-center justify-between text-[11px] text-on-surface-variant font-bold">
+                    <span>نویسنده: {{ post.author.get_full_name|default:post.author.username }}</span>
+                    <span>{{ post.created_at|date:"j F Y" }}</span>
+                </div>
+                <h3 class="text-base font-bold text-on-surface hover:text-primary transition-colors">
+                    <a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a>
+                </h3>
+                <p class="text-xs text-on-surface-variant font-medium line-clamp-2">{{ post.content|striptags }}</p>
+            </div>
+            <div class="p-4 pt-0">
+                <a href="{% url 'blog_detail' post.slug %}" class="text-xs font-bold text-primary hover:underline">ادامه مطلب...</a>
+            </div>
+        </article>
+        {% empty %}
+        <p class="text-on-surface-variant text-sm col-span-3 text-center py-12">هنوز مقاله‌ای منتشر نشده است.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

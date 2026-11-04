@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings  # جایگزین ایمپورت مستقیم User
 
 
 class Category(models.Model):
@@ -15,13 +16,18 @@ class Product(models.Model):
     name = models.CharField(max_length=255, verbose_name="نام محصول")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products', verbose_name="دسته‌بندی")
     price = models.BigIntegerField(verbose_name="قیمت (تومان)")
-    discount_price = models.BigIntegerField(null=True, blank=True, verbose_name="قیمت تخفیف‌خورده (شگفت‌انگیز)")
+    discount_price = models.BigIntegerField(null=True, blank=True, verbose_name="قیمت تخفیف‌خورده")
     stock = models.IntegerField(default=0, verbose_name="موجودی انبار")
     weight = models.IntegerField(default=0, verbose_name="وزن (گرم)")
     main_image = models.ImageField(upload_to='products/', null=True, blank=True, verbose_name="تصویر اصلی")
     full_description = models.TextField(blank=True, null=True, verbose_name="توضیحات کامل محصول")
 
-    is_flash_deal = models.BooleanField(default=False, verbose_name="نمایش در پیشنهادهای شگفت‌انگیز؟")
+    # فیلدهای سئو (Rank Math) برای محصولات
+    meta_title = models.CharField(max_length=255, blank=True, null=True, verbose_name="عنوان سئو")
+    meta_description = models.TextField(blank=True, null=True, verbose_name="توضیحات متاسئو")
+    focus_keyword = models.CharField(max_length=100, blank=True, null=True, verbose_name="کلمه کلیدی اصلی")
+
+    is_flash_deal = models.BooleanField(default=False, verbose_name="پیشنهاد شگفت‌انگیز؟")
     is_active = models.BooleanField(default=True, verbose_name="فعال باشد؟")
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -30,7 +36,6 @@ class Product(models.Model):
 
 
 class HomeSection(models.Model):
-    """مدل مدیریت متن، تصویر و تنظیمات اختصاصی سکشن‌های صفحه اصلی"""
     KEY_CHOICES = (
         ('hero', 'بنر اصلی (هیرو)'),
         ('categories', 'سکشن دسته‌بندی‌ها'),
@@ -46,10 +51,39 @@ class HomeSection(models.Model):
     button_text = models.CharField(max_length=100, blank=True, null=True, verbose_name="متن دکمه")
     button_link = models.CharField(max_length=255, blank=True, null=True, verbose_name="لینک دکمه")
 
-    # تنظیمات تایمر برای سکشن شگفت‌انگیزها
     timer_hours = models.IntegerField(default=7, verbose_name="ساعت تایمر")
     timer_minutes = models.IntegerField(default=38, verbose_name="دقیقه تایمر")
     timer_seconds = models.IntegerField(default=42, verbose_name="ثانیه تایمر")
 
     def __str__(self):
-        return self.get_key_display()
+        return self.title
+
+
+class BlogCategory(models.Model):
+    name = models.CharField(max_length=150, verbose_name="عنوان دسته‌بندی بلاگ")
+    slug = models.SlugField(unique=True, allow_unicode=True, verbose_name="نام در URL")
+
+    def __str__(self):
+        return self.name
+
+
+class BlogPost(models.Model):
+    title = models.CharField(max_length=255, verbose_name="عنوان مقاله")
+    slug = models.SlugField(unique=True, allow_unicode=True, verbose_name="نام در URL (اسلاگ)")
+    # اصلاح ارتباط نویسنده با مدل کاربر پروژه
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="نویسنده")
+    category = models.ForeignKey(BlogCategory, on_delete=models.CASCADE, related_name='posts',
+                                 verbose_name="دسته‌بندی بلاگ")
+    image = models.ImageField(upload_to='blog/', null=True, blank=True, verbose_name="تصویر شاخص")
+    content = models.TextField(verbose_name="محتوای مقاله")
+
+    # فیلدهای سئو (Rank Math)
+    focus_keyword = models.CharField(max_length=100, blank=True, null=True, verbose_name="کلمه کلیدی اصلی")
+    meta_title = models.CharField(max_length=255, blank=True, null=True, verbose_name="عنوان سئو")
+    meta_description = models.TextField(blank=True, null=True, verbose_name="توضیحات متاسئو")
+
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ انتشار")
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title

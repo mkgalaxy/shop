@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static jalali_tags %}
 
 {% block title %}پیشخوان مدیریت یکپارچه | امکااستور{% endblock %}
 
@@ -10,18 +10,18 @@
     .tab-content.active { display: block; }
 </style>
 
-<!-- سایدبار ثابت سمت راست پیشخوان -->
-<aside class="fixed right-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col pt-space-lg pb-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+<!-- سایدبار ثابت سمت راست -->
+<aside class="fixed right-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col pt-space-lg pb-space-lg shadow-xs border-l border-surface-container overflow-y-auto">
     <div class="px-space-lg mb-space-xl flex items-center gap-space-sm">
-        <div class="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-base">ام</div>
+        <div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center text-on-primary font-bold text-base shadow-xs">ام</div>
         <div class="flex flex-col">
-            <span class="text-primary font-bold text-base">امکااستور</span>
-            <span class="text-xs text-on-surface-variant">مدیریت یکپارچه</span>
+            <span class="text-primary font-black text-base">امکااستور</span>
+            <span class="text-xs text-on-surface-variant font-bold">مدیریت یکپارچه</span>
         </div>
     </div>
 
     <nav class="flex-1 px-space-md flex flex-col gap-space-xs font-body-md text-body-md cursor-pointer">
-        <a onclick="switchTab('overview', this)" class="tab-btn flex items-center px-space-md py-space-sm transition-colors bg-primary-container text-on-primary-container font-bold rounded-xl" data-target="overview">
+        <a onclick="switchTab('overview', this)" class="tab-btn flex items-center px-space-md py-space-sm transition-colors bg-primary text-on-primary font-bold rounded-xl shadow-xs" data-target="overview">
             <span class="material-symbols-outlined ml-space-sm">dashboard</span>نمای کلی سیستم
         </a>
         <a onclick="switchTab('products', this)" class="tab-btn flex items-center px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-target="products">
@@ -33,27 +33,30 @@
         <a onclick="switchTab('sections', this)" class="tab-btn flex items-center px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-target="sections">
             <span class="material-symbols-outlined ml-space-sm">view_quilt</span>طراحی و سکشن‌ها
         </a>
+        <a onclick="switchTab('blog', this)" class="tab-btn flex items-center px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-target="blog">
+            <span class="material-symbols-outlined ml-space-sm">article</span>مدیریت بلاگ و مقالات
+        </a>
         <a onclick="switchTab('orders', this)" class="tab-btn flex items-center px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-target="orders">
             <span class="material-symbols-outlined ml-space-sm">receipt_long</span>سفارش‌ها
         </a>
     </nav>
 
-    <div class="px-space-md pt-space-md">
-        <a class="flex items-center px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-md text-label-md" href="{% url 'home' %}">
+    <div class="px-space-md pt-space-md border-t border-surface-container">
+        <a class="flex items-center px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-bold text-xs" href="{% url 'home' %}">
             <span class="material-symbols-outlined ml-space-sm">storefront</span>بازگشت به فروشگاه
         </a>
     </div>
 </aside>
 
-<div class="pr-64">
+<div class="pr-64 min-h-screen">
     <!-- هدر داشبورد -->
-    <header class="dashboard-header fixed top-0 right-64 left-0 h-16 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl" style="display: flex !important;">
-        <div class="flex items-center gap-space-sm w-96 bg-surface-container-low rounded-xl px-space-md py-space-xs">
+    <header class="dashboard-header fixed top-0 right-64 left-0 h-16 bg-surface-container-low backdrop-blur-xl shadow-xs z-40 flex items-center justify-between px-space-xl border-b border-surface-container" style="display: flex !important;">
+        <div class="flex items-center gap-space-sm w-96 bg-surface-container rounded-xl px-space-md py-space-xs border border-surface-container">
             <span class="material-symbols-outlined text-outline text-[18px]">search</span>
-            <input class="bg-transparent border-none outline-none font-body-sm text-body-sm text-on-surface placeholder:text-outline w-full" placeholder="جستجو..." type="text"/>
+            <input class="bg-transparent border-none outline-none font-body-sm text-body-sm text-on-surface placeholder:text-outline w-full" placeholder="جستجو در پنل..." type="text"/>
         </div>
         <div class="flex items-center gap-space-md">
-            <button id="dashboard-theme-toggle" class="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-lg flex items-center gap-1 text-xs font-bold bg-surface-container-low border border-surface-container-high cursor-pointer" type="button">
+            <button id="dashboard-theme-toggle" class="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-lg flex items-center gap-1 text-xs font-bold bg-surface-container border border-surface-container cursor-pointer" type="button">
                 <span class="material-symbols-outlined text-[18px]">dark_mode</span>
                 <span>تم</span>
             </button>
@@ -69,82 +72,74 @@
         </div>
     </header>
 
-    <main class="relative pt-16 bg-surface w-full p-space-xl">
+    <main class="relative pt-20 w-full p-space-xl min-h-screen">
 
-        <!-- ================= تب ۱: نمای کلی (کارت‌های آمار و گراف) ================= -->
+        <!-- ================= تب ۱: نمای کلی ================= -->
         <div id="overview" class="tab-content active flex flex-col gap-space-lg">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
-                <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between">
+                <div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-surface-container shadow-xs flex flex-col justify-between">
                     <div class="flex items-start justify-between mb-space-md">
                         <div class="flex flex-col gap-1">
-                            <span class="font-label-md text-label-md text-on-surface-variant">کل محصولات ثبت‌شده</span>
-                            <span class="font-headline-md font-bold text-on-surface">{{ total_products }} <span class="font-label-sm text-on-surface-variant">قلم کالا</span></span>
+                            <span class="text-xs font-bold text-on-surface-variant">کل محصولات</span>
+                            <span class="text-2xl font-black text-on-surface">{{ total_products }} <span class="text-xs text-on-surface-variant font-normal">کالا</span></span>
                         </div>
-                        <div class="w-11 h-11 rounded-xl bg-secondary-container flex items-center justify-center text-on-secondary-container">
+                        <div class="w-11 h-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold">
                             <span class="material-symbols-outlined text-[22px]">inventory_2</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between">
+                <div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-surface-container shadow-xs flex flex-col justify-between">
                     <div class="flex items-start justify-between mb-space-md">
                         <div class="flex flex-col gap-1">
-                            <span class="font-label-md text-label-md text-on-surface-variant">کل دسته‌بندی‌ها</span>
-                            <span class="font-headline-md font-bold text-on-surface">{{ total_categories }} <span class="font-label-sm text-on-surface-variant">دسته</span></span>
+                            <span class="text-xs font-bold text-on-surface-variant">کل دسته‌بندی‌ها</span>
+                            <span class="text-2xl font-black text-on-surface">{{ total_categories }} <span class="text-xs text-on-surface-variant font-normal">دسته</span></span>
                         </div>
-                        <div class="w-11 h-11 rounded-xl bg-primary-fixed flex items-center justify-center text-on-primary-fixed-variant">
+                        <div class="w-11 h-11 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center font-bold">
                             <span class="material-symbols-outlined text-[22px]">category</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between">
+                <div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-surface-container shadow-xs flex flex-col justify-between">
                     <div class="flex items-start justify-between mb-space-md">
                         <div class="flex flex-col gap-1">
-                            <span class="font-label-md text-label-md text-on-surface-variant">سکشن‌های صفحه اصلی</span>
-                            <span class="font-headline-md font-bold text-on-surface">{{ total_sections|default:0 }} <span class="font-label-sm text-on-surface-variant">سکشن</span></span>
+                            <span class="text-xs font-bold text-on-surface-variant">مقالات بلاگ</span>
+                            <span class="text-2xl font-black text-on-surface">{{ blog_posts.count }} <span class="text-xs text-on-surface-variant font-normal">مقاله</span></span>
                         </div>
-                        <div class="w-11 h-11 rounded-xl bg-surface-container flex items-center justify-center text-primary">
-                            <span class="material-symbols-outlined text-[22px]">view_quilt</span>
+                        <div class="w-11 h-11 rounded-xl bg-tertiary-container/20 text-tertiary flex items-center justify-center font-bold">
+                            <span class="material-symbols-outlined text-[22px]">article</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between">
+                <div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-surface-container shadow-xs flex flex-col justify-between">
                     <div class="flex items-start justify-between mb-space-md">
                         <div class="flex flex-col gap-1">
-                            <span class="font-label-md text-label-md text-on-surface-variant">وضعیت پیشخوان</span>
-                            <span class="font-headline-md font-bold text-primary">پویا و فعال</span>
+                            <span class="text-xs font-bold text-on-surface-variant">وضعیت پیشخوان</span>
+                            <span class="text-2xl font-black text-primary">پویا</span>
                         </div>
-                        <div class="w-11 h-11 rounded-xl bg-primary-container flex items-center justify-center text-on-primary-container">
+                        <div class="w-11 h-11 rounded-xl bg-primary-container/20 text-primary flex items-center justify-center font-bold">
                             <span class="material-symbols-outlined text-[22px]">check_circle</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- نمودار تحلیلی فروش -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
-                <div class="lg:col-span-12 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-lg">
-                        <div>
-                            <h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">روند فروش و تحلیل درآمد</h2>
-                            <p class="font-body-sm text-body-sm text-on-surface-variant">مقایسه فروش هفتگی با هدف‌گذاری ماهانه (ارقام به میلیون تومان)</p>
-                        </div>
-                    </div>
-                    <div class="w-full h-64 relative flex items-end">
-                        <svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 600 220">
-                            <polyline fill="none" points="15,160 100,140 185,110 270,80 355,95 440,55 525,40 585,30" stroke="#00855d" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5"></polyline>
-                        </svg>
-                    </div>
+            <div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-surface-container shadow-xs">
+                <h2 class="text-lg font-black text-on-surface mb-2">روند فروش و تحلیل درآمد</h2>
+                <div class="w-full h-64 relative flex items-end pt-4">
+                    <svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 600 220">
+                        <polyline fill="none" points="15,160 100,140 185,110 270,80 355,95 440,55 525,40 585,30" stroke="#006948" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5"></polyline>
+                    </svg>
                 </div>
             </div>
         </div>
 
         <!-- ================= تب ۲: مدیریت محصولات ================= -->
         <div id="products" class="tab-content flex flex-col gap-space-lg">
-            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
-                <h2 class="font-headline-sm font-bold text-on-surface">
+            <div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-surface-container shadow-xs">
+                <h2 class="text-lg font-black text-on-surface mb-4">
                     {% if edit_product %}ویرایش محصول: {{ edit_product.name }}{% else %}افزودن محصول جدید{% endif %}
                 </h2>
                 <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -152,177 +147,57 @@
                     <input type="hidden" name="action" value="save_product">
                     <input type="hidden" name="product_id" value="{{ edit_product.id|default:'' }}">
 
-                    <div class="flex flex-col gap-1"><label class="text-xs font-bold text-on-surface-variant">نام محصول</label>{{ product_form.name }}</div>
-                    <div class="flex flex-col gap-1"><label class="text-xs font-bold text-on-surface-variant">دسته‌بندی</label>{{ product_form.category }}</div>
-                    <div class="flex flex-col gap-1"><label class="text-xs font-bold text-on-surface-variant">قیمت (تومان)</label>{{ product_form.price }}</div>
-                    <div class="flex flex-col gap-1"><label class="text-xs font-bold text-on-surface-variant">قیمت تخفیف‌خورده</label>{{ product_form.discount_price }}</div>
-                    <div class="flex flex-col gap-1"><label class="text-xs font-bold text-on-surface-variant">موجودی انبار</label>{{ product_form.stock }}</div>
-                    <div class="flex flex-col gap-1"><label class="text-xs font-bold text-on-surface-variant">وزن (گرم)</label>{{ product_form.weight }}</div>
-                    <div class="flex flex-col gap-1 md:col-span-2"><label class="text-xs font-bold text-on-surface-variant">تصویر اصلی</label>{{ product_form.main_image }}</div>
-                    <div class="flex flex-col gap-1 md:col-span-2"><label class="text-xs font-bold text-on-surface-variant">توضیحات کامل</label>{{ product_form.full_description }}</div>
+                    <div class="flex flex-col gap-1"><label class="text-xs font-bold">نام محصول</label>{{ product_form.name }}</div>
+                    <div class="flex flex-col gap-1"><label class="text-xs font-bold">دسته‌بندی</label>{{ product_form.category }}</div>
+                    <div class="flex flex-col gap-1"><label class="text-xs font-bold">قیمت (تومان)</label>{{ product_form.price }}</div>
+                    <div class="flex flex-col gap-1"><label class="text-xs font-bold">قیمت تخفیف‌خورده</label>{{ product_form.discount_price }}</div>
+                    <div class="flex flex-col gap-1"><label class="text-xs font-bold">موجودی انبار</label>{{ product_form.stock }}</div>
+                    <div class="flex flex-col gap-1"><label class="text-xs font-bold">وزن (گرم)</label>{{ product_form.weight }}</div>
+                    <div class="flex flex-col gap-1 md:col-span-2"><label class="text-xs font-bold">تصویر اصلی</label>{{ product_form.main_image }}</div>
+                    <div class="flex flex-col gap-1 md:col-span-2"><label class="text-xs font-bold">توضیحات کامل</label>{{ product_form.full_description }}</div>
 
-                    <div class="md:col-span-2 flex justify-end gap-2">
+                    <div class="md:col-span-2 border-t border-surface-container pt-4 mt-2 grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="flex flex-col gap-1"><label class="text-xs font-bold">کلمه کلیدی اصلی (Rank Math)</label>{{ product_form.focus_keyword }}</div>
+                        <div class="flex flex-col gap-1"><label class="text-xs font-bold">عنوان سئو</label>{{ product_form.meta_title }}</div>
+                        <div class="flex flex-col gap-1"><label class="text-xs font-bold">توضیحات متا</label>{{ product_form.meta_description }}</div>
+                    </div>
+
+                    <div class="md:col-span-2 flex justify-end gap-2 mt-2">
                         {% if edit_product %}
-                        <a href="{% url 'dashboard_home' %}" class="bg-surface-container-high text-on-surface px-6 py-2.5 rounded-xl font-bold">لغو ویرایش</a>
+                        <a href="{% url 'dashboard_home' %}" class="bg-surface-container text-on-surface px-6 py-2.5 rounded-xl font-bold text-xs">لغو</a>
                         {% endif %}
-                        <button type="submit" class="bg-primary text-on-primary px-6 py-2.5 rounded-xl font-bold">ذخیره محصول</button>
+                        <button type="submit" class="bg-primary text-on-primary px-6 py-2.5 rounded-xl font-bold text-xs cursor-pointer">ذخیره محصول</button>
                     </div>
                 </form>
             </div>
 
-            <div class="bg-surface-container-lowest rounded-xl shadow-sm p-space-lg">
-                <h3 class="font-headline-sm font-bold text-on-surface mb-4">لیست محصولات</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-right border-collapse">
-                        <thead>
-                            <tr class="bg-surface-container-low text-on-surface-variant font-label-md">
-                                <th class="p-3">تصویر</th>
-                                <th class="p-3">نام محصول</th>
-                                <th class="p-3">قیمت</th>
-                                <th class="p-3">موجودی</th>
-                                <th class="p-3 text-center">عملیات</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-surface-container">
-                            {% for p in products %}
-                            <tr>
-                                <td class="p-3">{% if p.main_image %}<img src="{{ p.main_image.url }}" class="w-10 h-10 object-cover rounded-lg">{% endif %}</td>
-                                <td class="p-3 font-bold">{{ p.name }}</td>
-                                <td class="p-3">{{ p.price }} تومان</td>
-                                <td class="p-3">{{ p.stock }}</td>
-                                <td class="p-3 text-center flex justify-center gap-2">
-                                    <a href="?edit_product={{ p.id }}" class="p-1 text-primary hover:bg-primary-container/20 rounded" title="ویرایش">
-                                        <span class="material-symbols-outlined text-sm">edit</span>
-                                    </a>
-                                    <form method="post" onsubmit="return confirm('حذف محصول؟');">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="action" value="delete_product">
-                                        <input type="hidden" name="product_id" value="{{ p.id }}">
-                                        <button type="submit" class="p-1 text-error hover:bg-error-container rounded" title="حذف"><span class="material-symbols-outlined text-sm">delete</span></button>
-                                    </form>
-                                </td>
-                            </tr>
-                            {% empty %}
-                            <tr><td colspan="5" class="p-4 text-center text-on-surface-variant">محصولی ثبت نشده است.</td></tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= تب ۳: دسته‌بندی‌ها ================= -->
-        <div id="categories" class="tab-content flex flex-col gap-space-lg">
-            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm">
-                <h2 class="font-headline-sm font-bold text-on-surface mb-4">
-                    {% if edit_category %}ویرایش دسته: {{ edit_category.name }}{% else %}افزودن دسته‌بندی جدید{% endif %}
-                </h2>
-                <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    {% csrf_token %}
-                    <input type="hidden" name="action" value="save_category">
-                    <input type="hidden" name="category_id" value="{{ edit_category.id|default:'' }}">
-
-                    <div class="flex flex-col gap-1"><label class="text-xs font-bold text-on-surface-variant">نام دسته</label>{{ category_form.name }}</div>
-                    <div class="flex flex-col gap-1"><label class="text-xs font-bold text-on-surface-variant">دسته والد</label>{{ category_form.parent }}</div>
-                    <div class="flex flex-col gap-1 md:col-span-2"><label class="text-xs font-bold text-on-surface-variant">تصویر دسته</label>{{ category_form.image }}</div>
-
-                    <div class="md:col-span-2 flex justify-end gap-2">
-                        {% if edit_category %}
-                        <a href="{% url 'dashboard_home' %}" class="bg-surface-container-high text-on-surface px-6 py-2.5 rounded-xl font-bold">لغو ویرایش</a>
-                        {% endif %}
-                        <button type="submit" class="bg-primary text-on-primary px-6 py-2.5 rounded-xl font-bold">ذخیره دسته‌بندی</button>
-                    </div>
-                </form>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-right border-collapse">
-                        <thead>
-                            <tr class="bg-surface-container-low text-on-surface-variant font-label-md">
-                                <th class="p-3">نام دسته</th>
-                                <th class="p-3">دسته والد</th>
-                                <th class="p-3 text-center">عملیات</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-surface-container">
-                            {% for cat in categories %}
-                            <tr>
-                                <td class="p-3 font-bold">{{ cat.name }}</td>
-                                <td class="p-3">{{ cat.parent.name|default:"دسته اصلی" }}</td>
-                                <td class="p-3 text-center flex justify-center gap-2">
-                                    <a href="?edit_category={{ cat.id }}" class="p-1 text-primary hover:bg-primary-container/20 rounded" title="ویرایش">
-                                        <span class="material-symbols-outlined text-sm">edit</span>
-                                    </a>
-                                    <form method="post" onsubmit="return confirm('حذف دسته؟');">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="action" value="delete_category">
-                                        <input type="hidden" name="category_id" value="{{ cat.id }}">
-                                        <button type="submit" class="p-1 text-error hover:bg-error-container rounded" title="حذف"><span class="material-symbols-outlined text-sm">delete</span></button>
-                                    </form>
-                                </td>
-                            </tr>
-                            {% empty %}
-                            <tr><td colspan="3" class="p-4 text-center text-on-surface-variant">دسته‌ای ثبت نشده است.</td></tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    <!-- تب چهارم در داشبورد برای ویرایش سکشن‌ها -->
-        <div id="sections" class="tab-content flex flex-col gap-space-lg">
-            {% if edit_section %}
-            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm">
-                <h2 class="font-headline-sm font-bold text-on-surface mb-4">ویرایش سکشن: {{ edit_section.title }}</h2>
-                <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {% csrf_token %}
-                    <input type="hidden" name="action" value="save_section">
-                    <input type="hidden" name="section_id" value="{{ edit_section.id }}">
-
-                    <div class="flex flex-col gap-1">
-                        <label class="text-xs font-bold text-on-surface-variant">عنوان سکشن</label>
-                        <input type="text" name="title" value="{{ edit_section.title }}" class="w-full bg-surface p-2.5 rounded-lg border border-surface-container-high">
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <label class="text-xs font-bold text-on-surface-variant">متن دکمه</label>
-                        <input type="text" name="button_text" value="{{ edit_section.button_text|default:'' }}" class="w-full bg-surface p-2.5 rounded-lg border border-surface-container-high">
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <label class="text-xs font-bold text-on-surface-variant">لینک دکمه</label>
-                        <input type="text" name="button_link" value="{{ edit_section.button_link|default:'' }}" class="w-full bg-surface p-2.5 rounded-lg border border-surface-container-high">
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <label class="text-xs font-bold text-on-surface-variant">تصویر سکشن</label>
-                        <input type="file" name="image" class="w-full bg-surface p-2.5 rounded-lg">
-                    </div>
-                    <div class="flex flex-col gap-1 md:col-span-2">
-                        <label class="text-xs font-bold text-on-surface-variant">توضیحات / زیرعنوان</label>
-                        <textarea name="subtitle" rows="3" class="w-full bg-surface p-2.5 rounded-lg border border-surface-container-high">{{ edit_section.subtitle|default:'' }}</textarea>
-                    </div>
-                    <div class="md:col-span-2 flex justify-end gap-2">
-                        <a href="{% url 'dashboard_home' %}" class="bg-surface-container-high text-on-surface px-6 py-2.5 rounded-xl font-bold">لغو</a>
-                        <button type="submit" class="bg-primary text-on-primary px-6 py-2.5 rounded-xl font-bold">ذخیره تغییرات سکشن</button>
-                    </div>
-                </form>
-            </div>
-            {% endif %}
-
-            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm">
-                <h3 class="font-headline-sm font-bold text-on-surface mb-4">لیست سکشن‌های صفحه اصلی</h3>
-                <table class="w-full text-right border-collapse">
+            <div class="bg-surface-container-lowest rounded-2xl border border-surface-container shadow-xs p-space-lg">
+                <h3 class="text-lg font-black text-on-surface mb-4">لیست محصولات</h3>
+                <table class="w-full text-right border-collapse text-xs">
                     <thead>
-                        <tr class="bg-surface-container-low text-on-surface-variant font-label-md">
-                            <th class="p-3">عنوان سکشن</th>
-                            <th class="p-3">نوع کلید</th>
-                            <th class="p-3 text-center">عملیات ویرایش</th>
+                        <tr class="bg-surface-container-low text-on-surface-variant font-bold border-b border-surface-container">
+                            <th class="p-3">تصویر</th>
+                            <th class="p-3">نام محصول</th>
+                            <th class="p-3">قیمت</th>
+                            <th class="p-3">موجودی</th>
+                            <th class="p-3 text-center">عملیات</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-surface-container">
-                        {% for sec in sections %}
+                        {% for p in products %}
                         <tr>
-                            <td class="p-3 font-bold">{{ sec.title }}</td>
-                            <td class="p-3 text-primary">{{ sec.key }}</td>
-                            <td class="p-3 text-center">
-                                <a href="?edit_section={{ sec.id }}" class="bg-primary-container text-on-primary-container px-3 py-1.5 rounded-lg text-xs font-bold inline-block">ویرایش محتوا</a>
+                            <td class="p-3">{% if p.main_image %}<img src="{{ p.main_image.url }}" class="w-10 h-10 object-cover rounded-lg">{% endif %}</td>
+                            <td class="p-3 font-bold">{{ p.name }}</td>
+                            <td class="p-3">{{ p.price }} تومان</td>
+                            <td class="p-3">{{ p.stock }}</td>
+                            <td class="p-3 text-center flex justify-center gap-2">
+                                <a href="?edit_product={{ p.id }}" class="p-1.5 text-primary hover:bg-primary/10 rounded-lg font-bold">ویرایش</a>
+                                <form method="post" onsubmit="return confirm('حذف محصول؟');" class="inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="delete_product">
+                                    <input type="hidden" name="product_id" value="{{ p.id }}">
+                                    <button type="submit" class="p-1.5 text-error hover:bg-error/10 rounded-lg font-bold cursor-pointer">حذف</button>
+                                </form>
                             </td>
                         </tr>
                         {% endfor %}
@@ -330,11 +205,206 @@
                 </table>
             </div>
         </div>
-        <!-- ================= تب ۵: سفارش‌ها ================= -->
+
+        <!-- ================= تب ۳: دسته‌بندی‌ها (همراه با فرم ثبت و جدول نمایش) ================= -->
+        <div id="categories" class="tab-content flex flex-col gap-space-lg">
+            <!-- فرم ثبت و ویرایش دسته‌بندی -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-surface-container shadow-xs">
+                <h2 class="text-lg font-black text-on-surface mb-4">
+                    {% if edit_category %}ویرایش دسته: {{ edit_category.name }}{% else %}افزودن دسته‌بندی جدید{% endif %}
+                </h2>
+                <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="save_category">
+                    <input type="hidden" name="category_id" value="{{ edit_category.id|default:'' }}">
+
+                    <div class="flex flex-col gap-1"><label class="text-xs font-bold">نام دسته</label>{{ category_form.name }}</div>
+                    <div class="flex flex-col gap-1"><label class="text-xs font-bold">دسته والد</label>{{ category_form.parent }}</div>
+                    <div class="flex flex-col gap-1 md:col-span-2"><label class="text-xs font-bold">تصویر دسته</label>{{ category_form.image }}</div>
+
+                    <div class="md:col-span-2 flex justify-end gap-2 mt-2">
+                        {% if edit_category %}
+                        <a href="{% url 'dashboard_home' %}" class="bg-surface-container text-on-surface px-6 py-2.5 rounded-xl font-bold text-xs">لغو</a>
+                        {% endif %}
+                        <button type="submit" class="bg-primary text-on-primary px-6 py-2.5 rounded-xl font-bold text-xs cursor-pointer">ذخیره دسته‌بندی</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- جدول نمایش دسته‌بندی‌ها -->
+            <div class="bg-surface-container-lowest rounded-2xl border border-surface-container shadow-xs p-space-lg">
+                <h3 class="text-lg font-black text-on-surface mb-4">لیست دسته‌بندی‌های محصولات</h3>
+                <table class="w-full text-right border-collapse text-xs">
+                    <thead>
+                        <tr class="bg-surface-container-low text-on-surface-variant font-bold border-b border-surface-container">
+                            <th class="p-3">تصویر</th>
+                            <th class="p-3">نام دسته</th>
+                            <th class="p-3">دسته والد</th>
+                            <th class="p-3 text-center">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-surface-container">
+                        {% for cat in categories %}
+                        <tr>
+                            <td class="p-3">
+                                {% if cat.image %}
+                                <img src="{{ cat.image.url }}" class="w-10 h-10 object-cover rounded-lg">
+                                {% else %}
+                                <div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary font-bold">
+                                    <span class="material-symbols-outlined text-sm">category</span>
+                                </div>
+                                {% endif %}
+                            </td>
+                            <td class="p-3 font-bold">{{ cat.name }}</td>
+                            <td class="p-3">{{ cat.parent.name|default:"اصلی (بدون والد)" }}</td>
+                            <td class="p-3 text-center flex justify-center gap-2">
+                                <a href="?edit_category={{ cat.id }}" class="p-1.5 text-primary hover:bg-primary/10 rounded-lg font-bold">ویرایش</a>
+                                <form method="post" onsubmit="return confirm('حذف دسته‌بندی؟');" class="inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="delete_category">
+                                    <input type="hidden" name="category_id" value="{{ cat.id }}">
+                                    <button type="submit" class="p-1.5 text-error hover:bg-error/10 rounded-lg font-bold cursor-pointer">حذف</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="4" class="p-4 text-center text-on-surface-variant font-bold">هیچ دسته‌بندی ثبت نشده است.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ================= تب ۴: طراحی و سکشن‌ها ================= -->
+        <div id="sections" class="tab-content flex flex-col gap-space-lg">
+            {% if edit_section %}
+            <div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-surface-container shadow-xs">
+                <h2 class="text-lg font-black text-on-surface mb-4">ویرایش سکشن: {{ edit_section.title }}</h2>
+                <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="save_section">
+                    <input type="hidden" name="section_id" value="{{ edit_section.id }}">
+
+                    <div class="flex flex-col gap-1"><label class="text-xs font-bold">عنوان سکشن</label><input type="text" name="title" value="{{ edit_section.title }}" class="w-full bg-surface p-2.5 rounded-lg border border-surface-container"></div>
+                    <div class="flex flex-col gap-1"><label class="text-xs font-bold">متن دکمه</label><input type="text" name="button_text" value="{{ edit_section.button_text|default:'' }}" class="w-full bg-surface p-2.5 rounded-lg border border-surface-container"></div>
+                    <div class="flex flex-col gap-1"><label class="text-xs font-bold">لینک دکمه</label><input type="text" name="button_link" value="{{ edit_section.button_link|default:'' }}" class="w-full bg-surface p-2.5 rounded-lg border border-surface-container"></div>
+                    <div class="flex flex-col gap-1"><label class="text-xs font-bold">تصویر سکشن</label><input type="file" name="image" class="w-full bg-surface p-2 rounded-lg"></div>
+
+                    <div class="flex flex-col gap-1 md:col-span-2"><label class="text-xs font-bold">توضیحات</label><textarea name="subtitle" rows="3" class="w-full bg-surface p-2.5 rounded-lg border border-surface-container">{{ edit_section.subtitle|default:'' }}</textarea></div>
+                    <div class="md:col-span-2 flex justify-end gap-2">
+                        <a href="{% url 'dashboard_home' %}" class="bg-surface-container text-on-surface px-6 py-2.5 rounded-xl font-bold text-xs">لغو</a>
+                        <button type="submit" class="bg-primary text-on-primary px-6 py-2.5 rounded-xl font-bold text-xs cursor-pointer">ذخیره سکشن</button>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+
+            <div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-surface-container shadow-xs">
+                <h3 class="text-lg font-black text-on-surface mb-4">لیست سکشن‌های صفحه اصلی</h3>
+                <table class="w-full text-right border-collapse text-xs">
+                    <thead>
+                        <tr class="bg-surface-container-low text-on-surface-variant font-bold border-b border-surface-container">
+                            <th class="p-3">عنوان</th>
+                            <th class="p-3">کلید</th>
+                            <th class="p-3 text-center">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-surface-container">
+                        {% for sec in sections %}
+                        <tr>
+                            <td class="p-3 font-bold">{{ sec.title }}</td>
+                            <td class="p-3 text-primary">{{ sec.key }}</td>
+                            <td class="p-3 text-center"><a href="?edit_section={{ sec.id }}" class="bg-primary/10 text-primary px-3 py-1.5 rounded-lg font-bold">ویرایش</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ================= تب ۵: مدیریت بلاگ ================= -->
+        <div id="blog" class="tab-content flex flex-col gap-space-lg">
+            <div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-surface-container shadow-xs">
+                <h3 class="text-base font-black text-on-surface mb-4">ثبت دسته‌بندی جدید بلاگ</h3>
+                <form method="post" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="save_blog_category">
+                    <div class="flex flex-col gap-1"><label class="text-xs font-bold">نام دسته بلاگ</label>{{ blog_category_form.name }}</div>
+                    <div class="flex flex-col gap-1"><label class="text-xs font-bold">اسلاگ (URL)</label>{{ blog_category_form.slug }}</div>
+                    <button type="submit" class="bg-secondary text-on-secondary px-6 py-2.5 rounded-xl font-bold text-xs h-10 cursor-pointer">افزودن دسته بلاگ</button>
+                </form>
+            </div>
+
+            <div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-surface-container shadow-xs">
+                <h2 class="text-lg font-black text-on-surface mb-4">
+                    {% if edit_post %}ویرایش مقاله: {{ edit_post.title }}{% else %}افزودن مقاله جدید به بلاگ{% endif %}
+                </h2>
+                <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="save_post">
+                    <input type="hidden" name="post_id" value="{{ edit_post.id|default:'' }}">
+
+                    <div class="flex flex-col gap-1"><label class="text-xs font-bold">عنوان مقاله</label>{{ blog_form.title }}</div>
+                    <div class="flex flex-col gap-1"><label class="text-xs font-bold">اسلاگ (URL)</label>{{ blog_form.slug }}</div>
+                    <div class="flex flex-col gap-1"><label class="text-xs font-bold">دسته‌بندی بلاگ</label>{{ blog_form.category }}</div>
+                    <div class="flex flex-col gap-1"><label class="text-xs font-bold">تصویر شاخص</label>{{ blog_form.image }}</div>
+                    <div class="flex flex-col gap-1 md:col-span-2"><label class="text-xs font-bold">محتوای مقاله</label>{{ blog_form.content }}</div>
+
+                    <div class="md:col-span-2 border-t border-surface-container pt-4 mt-2 grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="flex flex-col gap-1"><label class="text-xs font-bold">کلمه کلیدی اصلی (Rank Math)</label>{{ blog_form.focus_keyword }}</div>
+                        <div class="flex flex-col gap-1"><label class="text-xs font-bold">عنوان سئو</label>{{ blog_form.meta_title }}</div>
+                        <div class="flex flex-col gap-1"><label class="text-xs font-bold">توضیحات متا</label>{{ blog_form.meta_description }}</div>
+                    </div>
+
+                    <div class="md:col-span-2 flex justify-end gap-2 mt-2">
+                        {% if edit_post %}
+                        <a href="{% url 'dashboard_home' %}" class="bg-surface-container text-on-surface px-6 py-2.5 rounded-xl font-bold text-xs">لغو</a>
+                        {% endif %}
+                        <button type="submit" class="bg-primary text-on-primary px-6 py-2.5 rounded-xl font-bold text-xs cursor-pointer">ذخیره مقاله</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="bg-surface-container-lowest rounded-2xl border border-surface-container shadow-xs p-space-lg">
+                <h3 class="text-lg font-black text-on-surface mb-4">لیست مقالات بلاگ</h3>
+                <table class="w-full text-right border-collapse text-xs">
+                    <thead>
+                        <tr class="bg-surface-container-low text-on-surface-variant font-bold border-b border-surface-container">
+                            <th class="p-3">تصویر</th>
+                            <th class="p-3">عنوان مقاله</th>
+                            <th class="p-3">دسته‌بندی</th>
+                            <th class="p-3">تاریخ (شمسی)</th>
+                            <th class="p-3 text-center">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-surface-container">
+                        {% for post in blog_posts %}
+                        <tr>
+                            <td class="p-3">{% if post.image %}<img src="{{ post.image.url }}" class="w-10 h-10 object-cover rounded-lg">{% endif %}</td>
+                            <td class="p-3 font-bold">{{ post.title }}</td>
+                            <td class="p-3">{{ post.category.name }}</td>
+                            <td class="p-3 font-bold">{{ post.created_at|to_jalali:'%Y/%m/%d' }}</td>
+                            <td class="p-3 text-center flex justify-center gap-2">
+                                <a href="?edit_post={{ post.id }}" class="p-1.5 text-primary hover:bg-primary/10 rounded-lg font-bold">ویرایش</a>
+                                <form method="post" onsubmit="return confirm('حذف مقاله؟');" class="inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="delete_post">
+                                    <input type="hidden" name="post_id" value="{{ post.id }}">
+                                    <button type="submit" class="p-1.5 text-error hover:bg-error/10 rounded-lg font-bold cursor-pointer">حذف</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ================= تب ۶: سفارش‌ها ================= -->
         <div id="orders" class="tab-content flex flex-col gap-space-lg">
-            <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm">
-                <h2 class="font-headline-sm font-bold text-on-surface mb-4">سفارش‌ها و مرسولات</h2>
-                <p class="text-on-surface-variant">مدیریت سفارش‌ها به زودی...</p>
+            <div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-surface-container shadow-xs">
+                <h2 class="text-lg font-black text-on-surface mb-2">سفارش‌ها و مرسولات</h2>
+                <p class="text-xs text-on-surface-variant font-bold">بخش مدیریت سفارش‌ها آماده ثبت است.</p>
             </div>
         </div>
 
@@ -345,12 +415,15 @@
     function switchTab(tabId, element) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(el => {
-            el.classList.remove('bg-primary-container', 'text-on-primary-container', 'font-bold');
+            el.classList.remove('bg-primary', 'text-on-primary', 'font-bold', 'shadow-xs');
             el.classList.add('text-on-surface-variant');
         });
-        document.getElementById(tabId).classList.add('active');
+        const targetTab = document.getElementById(tabId);
+        if (targetTab) {
+            targetTab.classList.add('active');
+        }
         if (element) {
-            element.classList.add('bg-primary-container', 'text-on-primary-container', 'font-bold');
+            element.classList.add('bg-primary', 'text-on-primary', 'font-bold', 'shadow-xs');
             element.classList.remove('text-on-surface-variant');
         }
         localStorage.setItem('active_dashboard_tab', tabId);
@@ -368,6 +441,10 @@
         }
         if (urlParams.has('edit_section')) {
             switchTab('sections', document.querySelector('[data-target="sections"]'));
+            return;
+        }
+        if (urlParams.has('edit_post')) {
+            switchTab('blog', document.querySelector('[data-target="blog"]'));
             return;
         }
 
