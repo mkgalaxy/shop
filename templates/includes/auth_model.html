@@ -1,0 +1,105 @@
+{% load static %}
+<!-- پاپ‌آپ مدال ورود و ثبت‌نام -->
+<div id="auth-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm hidden transition-opacity duration-300">
+    <div class="relative w-full max-w-md mx-4 perspective-1000">
+
+        <!-- کارت چرخشی ۳ بعدی -->
+        <div id="auth-card" class="relative w-full transition-transform duration-700 transform-style-3d bg-surface-container-lowest border border-surface-container/60 rounded-2xl shadow-2xl p-8">
+
+            <!-- دکمه بستن پاپ‌آپ -->
+            <button type="button" onclick="closeAuthModal()" class="absolute top-4 left-4 text-on-surface-variant hover:text-primary transition-colors cursor-pointer z-20">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+
+            <!-- روی کارت: فرم ورود -->
+            <div id="login-side" class="backface-hidden">
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 rounded-xl bg-primary-container text-on-primary-container flex items-center justify-center mx-auto mb-3 shadow-sm font-black text-lg">
+                        امکا
+                    </div>
+                    <h2 class="text-2xl font-black text-on-surface">ورود به امکااستور</h2>
+                    <p class="text-xs text-on-surface-variant mt-1 font-medium">ورود با نام کاربری یا شماره تلفن</p>
+                </div>
+
+                <form method="POST" action="{% url 'login' %}" class="space-y-4">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-xs font-bold text-on-surface mb-1.5">نام کاربری یا شماره تلفن</label>
+                        <div class="flex items-center bg-surface-container-low rounded-xl px-3.5 py-2.5 border border-surface-container focus-within:border-primary transition-colors">
+                            <span class="material-symbols-outlined text-outline text-[20px] ml-2">person</span>
+                            <input type="text" name="username" required placeholder="مثلا 09123456789 یا user123" class="bg-transparent border-none outline-none w-full text-xs text-on-surface placeholder:text-outline font-medium"/>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-on-surface mb-1.5">رمز عبور</label>
+                        <div class="flex items-center bg-surface-container-low rounded-xl px-3.5 py-2.5 border border-surface-container focus-within:border-primary transition-colors">
+                            <span class="material-symbols-outlined text-outline text-[20px] ml-2">lock</span>
+                            <input type="password" name="password" required placeholder="••••••••" class="bg-transparent border-none outline-none w-full text-xs text-on-surface placeholder:text-outline font-medium"/>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-primary hover:bg-primary-container text-on-primary py-3 rounded-xl text-xs font-extrabold shadow-lg transition-colors cursor-pointer mt-2">
+                        تایید و ورود
+                    </button>
+                </form>
+
+                <div class="text-center mt-6 text-xs text-on-surface-variant font-medium">
+                    حساب کاربری ندارید؟
+                    <button type="button" onclick="flipToRegister()" class="text-primary font-bold hover:underline cursor-pointer mr-1">ثبت‌نام کنید</button>
+                </div>
+            </div>
+
+            <!-- پشت کارت: فرم ثبت‌نام -->
+            <div id="register-side" class="absolute inset-0 p-8 bg-surface-container-lowest rounded-2xl backface-hidden rotate-y-180 flex flex-col justify-center">
+                <div class="text-center mb-4">
+                    <h2 class="text-2xl font-black text-on-surface">ساخت حساب کاربری</h2>
+                    <p class="text-xs text-on-surface-variant mt-1 font-medium">عضویت سریع در امکااستور</p>
+                </div>
+
+                <form method="POST" action="{% url 'register' %}" class="space-y-3">
+                    {% csrf_token %}
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-bold text-on-surface mb-1">نام</label>
+                            <input type="text" name="first_name" placeholder="علی" class="w-full bg-surface-container-low border border-surface-container rounded-xl px-3 py-2 text-xs text-on-surface outline-none focus:border-primary font-medium"/>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-on-surface mb-1">نام خانوادگی</label>
+                            <input type="text" name="last_name" placeholder="محمدی" class="w-full bg-surface-container-low border border-surface-container rounded-xl px-3 py-2 text-xs text-on-surface outline-none focus:border-primary font-medium"/>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-on-surface mb-1">نام کاربری</label>
+                        <input type="text" name="username" required placeholder="User_Name" class="w-full bg-surface-container-low border border-surface-container rounded-xl px-3 py-2 text-xs text-on-surface outline-none focus:border-primary font-medium"/>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-on-surface mb-1">شماره تلفن</label>
+                        <input type="text" name="phone_number" required placeholder="09123456789" class="w-full bg-surface-container-low border border-surface-container rounded-xl px-3 py-2 text-xs text-on-surface outline-none focus:border-primary font-medium"/>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-on-surface mb-1">رمز عبور</label>
+                        <input type="password" name="password" required placeholder="••••••••" class="w-full bg-surface-container-low border border-surface-container rounded-xl px-3 py-2 text-xs text-on-surface outline-none focus:border-primary font-medium"/>
+                    </div>
+                    <button type="submit" class="w-full bg-secondary text-on-secondary py-2.5 rounded-xl text-xs font-extrabold shadow-lg hover:bg-primary transition-colors cursor-pointer mt-1">
+                        تکمیل ثبت‌نام
+                    </button>
+                </form>
+
+                <div class="text-center mt-4 text-xs text-on-surface-variant font-medium">
+                    قبلاً ثبت‌نام کرده‌اید؟
+                    <button type="button" onclick="flipToLogin()" class="text-primary font-bold hover:underline cursor-pointer mr-1">وارد شوید</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function openAuthModal() { document.getElementById('auth-modal').classList.remove('hidden'); }
+    function closeAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); }
+    function flipToRegister() { document.getElementById('auth-card').style.transform = 'rotateY(180deg)'; }
+    function flipToLogin() { document.getElementById('auth-card').style.transform = 'rotateY(0deg)'; }
+    document.getElementById('auth-modal').addEventListener('click', function(e) { if (e.target === this) closeAuthModal(); });
+</script>

@@ -1,0 +1,144 @@
+{% load static %}
+<header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+    <!-- نوار بالای هدر -->
+    <div class="bg-surface-container-low">
+        <div class="max-w-[1360px] mx-auto px-margin flex items-center justify-between h-9 text-xs font-medium text-on-surface-variant">
+            <div class="flex items-center gap-space-lg">
+                <span class="flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-[15px] text-primary">local_shipping</span>
+                    ارسال رایگان سفارش‌های بالای ۵۰۰ هزار تومان در سراسر کشور
+                </span>
+                <span class="hidden md:flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-[15px] text-secondary">support_agent</span>
+                    پشتیبانی ۲۴ ساعته: ۰۲۱-۸۸۹۹۰۰۱۱
+                </span>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="hidden md:flex items-center gap-1 font-bold text-primary">
+                    <span class="material-symbols-outlined text-[15px]">calendar_today</span>
+                    <span id="current-jalali-date">در حال بارگذاری...</span>
+                </div>
+                <!-- دکمه سوییچ تم -->
+                <button id="theme-toggle" type="button" class="flex items-center gap-1 bg-surface-container-lowest px-2.5 py-1 rounded-lg border border-surface-container/80 shadow-sm text-xs font-bold hover:text-primary transition-colors cursor-pointer">
+                    <span class="material-symbols-outlined text-[16px]">dark_mode</span>
+                    <span>تغییر تم</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- بخش اصلی هدر -->
+    <div class="max-w-[1360px] mx-auto px-margin h-20 flex items-center justify-between gap-space-lg">
+        <div class="flex items-center gap-space-lg flex-1">
+            <button id="mobile-menu-btn" type="button" class="md:hidden p-2 text-on-surface-variant hover:text-primary focus:outline-none">
+                <span class="material-symbols-outlined text-2xl">menu</span>
+            </button>
+
+            <!-- لوگوی سایت متصل به تصویر دیتابیس / مدیا -->
+            <a href="{% url 'home' %}" class="flex items-center gap-space-sm">
+                <div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container font-bold overflow-hidden shadow-sm">
+                    {% if sec.hero.image %}
+                        <img src="{{ sec.hero.image.url }}" alt="لوگو" class="w-full h-full object-cover">
+                    {% else %}
+                        <img src="https://via.placeholder.com/40" alt="لوگو" class="w-full h-full object-cover">
+                    {% endif %}
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl text-primary tracking-tight font-extrabold">امکااستور</span>
+                    <span class="text-xs text-on-surface-variant font-medium">فروشگاه آنلاین سبک زندگی</span>
+                </div>
+            </a>
+
+            <!-- فیلد جستجو -->
+            <div class="hidden md:flex items-center flex-1 max-w-xl bg-surface-container-low rounded-xl px-space-md py-space-sm gap-space-sm border border-surface-container/60">
+                <span class="material-symbols-outlined text-outline">search</span>
+                <input class="bg-transparent border-none outline-none w-full text-sm text-on-surface placeholder:text-outline font-medium" placeholder="جستجو در محصولات و محتوا..." type="text"/>
+            </div>
+        </div>
+
+        <!-- بخش اکانت کاربر -->
+        <div class="flex items-center gap-space-md">
+            {% if user.is_authenticated %}
+                <div class="relative">
+                    <button type="button" onclick="toggleUserMenu()" class="flex items-center gap-2 bg-surface-container-low border border-surface-container/80 px-3.5 py-2 rounded-xl text-xs font-extrabold text-on-surface hover:text-primary transition-all cursor-pointer">
+                        <span class="material-symbols-outlined text-[18px] text-primary">account_circle</span>
+                        <span>{% if user.first_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}</span>
+                        <span class="material-symbols-outlined text-[16px]">expand_more</span>
+                    </button>
+
+                    <div id="user-dropdown-menu" class="absolute left-0 mt-2 w-52 bg-surface-container-lowest border border-surface-container/60 rounded-2xl shadow-2xl p-2 hidden transition-all z-50">
+                        {% if user.is_staff or user.role == 'admin' %}
+                            <a href="{% url 'dashboard_home' %}" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold text-primary hover:bg-surface-container-low transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">admin_panel_settings</span>
+                                <span>ورود به پیشخوان مدیریت</span>
+                            </a>
+                            <hr class="my-1 border-surface-container/60"/>
+                        {% endif %}
+
+                        <button type="button" onclick="openProfileModal()" class="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold text-on-surface hover:bg-surface-container-low hover:text-primary transition-colors text-right cursor-pointer">
+                            <span class="material-symbols-outlined text-[18px]">edit_square</span>
+                            <span>ویرایش پروفایل</span>
+                        </button>
+
+                        <form action="{% url 'logout' %}" method="post" class="w-full mt-1">
+                            {% csrf_token %}
+                            <button type="submit" class="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold text-error hover:bg-error-container/20 transition-colors text-right cursor-pointer">
+                                <span class="material-symbols-outlined text-[18px]">logout</span>
+                                <span>خروج از حساب</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <script>
+                    function toggleUserMenu() {
+                        const menu = document.getElementById('user-dropdown-menu');
+                        if (menu) menu.classList.toggle('hidden');
+                    }
+                    window.addEventListener('click', function(e) {
+                        const menu = document.getElementById('user-dropdown-menu');
+                        const btn = menu?.previousElementSibling;
+                        if (menu && btn && !menu.contains(e.target) && !btn.contains(e.target)) {
+                            menu.classList.add('hidden');
+                        }
+                    });
+                </script>
+            {% else %}
+                <button type="button" onclick="openAuthModal()" class="flex items-center gap-1.5 bg-primary text-on-primary px-3.5 py-2 rounded-xl text-xs font-extrabold shadow-sm hover:bg-primary-container transition-colors cursor-pointer">
+                    <span class="material-symbols-outlined text-[18px]">person</span>
+                    <span>ورود / ثبت‌نام</span>
+                </button>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- منوی ناوبری دسکتاپ (لینک مستقیم به محصولات هر دسته)[cite: 3] -->
+    <div class="bg-surface-container-lowest border-t border-surface-container/40">
+        <div class="max-w-[1360px] mx-auto px-margin h-11 flex items-center justify-between">
+            <nav class="hidden md:flex items-center gap-space-lg text-sm font-bold">
+                <a aria-current="page" class="transition-colors text-primary" href="{% url 'home' %}">صفحه اصلی</a>
+                {% for cat in categories %}
+                <a class="text-on-surface-variant hover:text-on-surface transition-colors" href="{% url 'category_products' cat.id %}">{{ cat.name }}</a>
+                {% empty %}
+                <a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">دسته‌بندی ثبت نشده</a>
+                {% endfor %}
+            </nav>
+        </div>
+    </div>
+</header>
+
+<!-- اسکریپت جاوااسکریپت برای نمایش تاریخ شمسی روز در هدر -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const options = { year: 'numeric', month: 'long', day: 'numeric', calendar: 'persian' };
+        try {
+            const todayPersian = new Intl.DateTimeFormat('fa-IR', options).format(new Date());
+            const dateElement = document.getElementById('current-jalali-date');
+            if (dateElement) {
+                dateElement.textContent = todayPersian;
+            }
+        } catch (e) {
+            document.getElementById('current-jalali-date').textContent = "امروز";
+        }
+    });
+</script>

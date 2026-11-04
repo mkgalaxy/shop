@@ -1,0 +1,103 @@
+/* static/css/style.css */
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
+
+@layer base {
+    html, body {
+        margin: 0;
+        padding: 0;
+        overscroll-behavior: none;
+        font-family: 'Vazirmatn', 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* ==========================================================================
+   تم دارک لوکس، عمیق و هماهنگ با هویت سبز امکااستور
+   ========================================================================== */
+html.dark body,
+html.dark main {
+    background-color: #091310 !important;
+    color: #e2f8f0 !important;
+}
+
+/* هدر در حالت دارک */
+html.dark header {
+    background-color: rgba(9, 19, 16, 0.95) !important;
+    border-bottom: 1px solid rgba(0, 105, 72, 0.25) !important;
+}
+
+/* کارت‌ها، باکس‌ها و تمام سطوح در حالت دارک */
+html.dark .bg-surface-container-lowest,
+html.dark .bg-surface-container-low,
+html.dark .bg-surface-container,
+html.dark .bg-surface,
+html.dark article {
+    background-color: #11221c !important;
+    color: #e2f8f0 !important;
+    border-color: #1c382f !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* عناوین و متن‌ها در حالت دارک */
+html.dark .text-on-surface,
+html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5 {
+    color: #f1fcf8 !important;
+}
+
+html.dark .text-on-surface-variant,
+html.dark p, html.dark span {
+    color: #9abfb1 !important;
+}
+
+/* آیکون‌ها و اینپوت‌ها */
+html.dark .text-outline,
+html.dark .text-outline-variant {
+    color: #5c8777 !important;
+}
+
+html.dark input {
+    color: #ffffff !important;
+    background-color: transparent !important;
+}
+
+html.dark input::placeholder {
+    color: #5c8777 !important;
+}
+
+/* فوتر در حالت دارک */
+html.dark footer {
+    background-color: #050b09 !important;
+    border-top: 1px solid #1c382f !important;
+}
+/* تنظیمات انیمیشن چرخش پاپ‌آپ (Flip Modal) */
+.perspective-1000 {
+    perspective: 1000px;
+}
+.transform-style-3d {
+    transform-style: preserve-3d;
+}
+.backface-hidden {
+    backface-visibility: hidden;
+}
+.rotate-y-180 {
+    transform: rotateY(180deg);
+}
+.admin-sidebar {
+    position: sticky;
+    top: 6rem;
+}
+
+html.dark .admin-card {
+    background-color: #11221c !important;
+    border-color: #1c382f !important;
+}
+html.dark .dashboard-card,
+html.dark .bg-surface-container-lowest {
+    background-color: #11221c !important;
+    border-color: #1c382f !important;
+}

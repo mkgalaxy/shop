@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} | امکااستور{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full max-w-[1360px] mx-auto px-margin gap-space-xl pb-16 pt-6">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-surface-container/50">
+
+        <!-- تصویر محصول -->
+        <div class="lg:col-span-5 flex justify-center">
+            {% if product.main_image %}
+            <img src="{{ product.main_image.url }}" class="w-full aspect-square object-cover rounded-xl shadow-md" alt="{{ product.name }}">
+            {% else %}
+            <img src="https://via.placeholder.com/400" class="w-full aspect-square object-cover rounded-xl shadow-md" alt="{{ product.name }}">
+            {% endif %}
+        </div>
+
+        <!-- اطلاعات و قیمت و توضیحات -->
+        <div class="lg:col-span-7 flex flex-col gap-4 text-right">
+            <span class="text-xs font-bold text-primary bg-primary-container px-3 py-1 rounded-full w-fit">{{ product.category.name }}</span>
+            <h1 class="text-2xl md:text-3xl font-black text-on-surface">{{ product.name }}</h1>
+
+            <div class="flex items-center gap-4 my-2">
+                {% if product.discount_price %}
+                <span class="text-sm text-on-surface-variant line-through">{{ product.price }} تومان</span>
+                <span class="text-2xl font-black text-primary">{{ product.discount_price }} تومان</span>
+                {% else %}
+                <span class="text-2xl font-black text-primary">{{ product.price }} تومان</span>
+                {% endif %}
+            </div>
+
+            <p class="text-sm text-on-surface-variant leading-relaxed">
+                {{ product.full_description|default:"توضیحات تکمیلی برای این محصول ثبت نشده است." }}
+            </p>
+
+            <div class="flex items-center gap-4 mt-6 pt-4 border-t border-surface-container">
+                <span class="text-xs text-on-surface-variant font-bold">موجودی انبار: {{ product.stock }} عدد</span>
+                <button class="bg-primary text-on-primary px-6 py-3 rounded-xl font-bold text-sm shadow-md hover:bg-primary/90 transition-colors">افزودن به سبد خرید</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
